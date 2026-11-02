@@ -1,0 +1,57 @@
+@FunctionalInterface
+public interface IAccount {
+    // The single abstract method now takes parameters
+    void openAccount(String customerName, double initialBalance);
+}
+
+----------------------------------------------------
+The Real-World Lambda Implementations
+public class AccountsPOC {
+
+    public static void main(String[] args) {
+        
+        // 1. SAVINGS ACCOUNT LAMBDA: Requires a minimum deposit of $100
+        IAccount savingsAccount = (name, balance) -> {
+            System.out.println("--- Processing Savings Account for " + name + " ---");
+            if (balance < 100.0) {
+                System.out.println("❌ ERROR: Savings Account requires a minimum deposit of $100.00");
+            } else {
+                System.out.println("✅ SUCCESS: Savings Account opened with a balance of $" + balance);
+            }
+        };
+
+        // 2. CRYPTO ACCOUNT LAMBDA: Charges a 2% entry fee on the spot
+        IAccount cryptoAccount = (name, balance) -> {
+            System.out.println("--- Processing Crypto Account for " + name + " ---");
+            double fee = balance * 0.02;
+            double finalBalance = balance - fee;
+            System.out.println("⚠️ 2% Entry Fee Charged: $" + fee);
+            System.out.println("✅ SUCCESS: Crypto Account active. Total Portfolio Value: $" + finalBalance);
+        };
+
+
+        // ─── SIMULATING THE REAL-WORLD ACTIONS ───
+        
+        // Alice tries to open a savings account with only $50
+        savingsAccount.openAccount("Alice", 50.00); 
+        System.out.println(); // Just a blank line for spacing
+        
+        // Bob opens a savings account with $500
+        savingsAccount.openAccount("Bob", 500.00);
+        System.out.println();
+        
+        // Charlie opens a Crypto account with $1000
+        cryptoAccount.openAccount("Charlie", 1000.00);
+    }
+}
+
+--------------------------------o/p
+--- Processing Savings Account for Alice ---
+❌ ERROR: Savings Account requires a minimum deposit of $100.00
+
+--- Processing Savings Account for Bob ---
+✅ SUCCESS: Savings Account opened with a balance of $500.0
+
+--- Processing Crypto Account for Charlie ---
+⚠️ 2% Entry Fee Charged: $20.0
+✅ SUCCESS: Crypto Account active. Total Portfolio Value: $980.0
