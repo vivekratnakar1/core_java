@@ -1,0 +1,75 @@
+import java.util.Objects;
+
+// A reference class used inside the main class
+class Address implements Cloneable {
+    String city;
+
+    Address(String city) {
+        this.city = city;
+    }
+
+    // Implementing clone for deep copy
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
+}
+
+// Main class implementing Cloneable
+class Employee implements Cloneable {
+    String name;
+    Address address; // Reference type
+
+    Employee(String name, Address address) {
+        this.name = name;
+        this.address = address;
+    }
+
+    // Method for Shallow Cloning
+    public Employee shallowClone() throws CloneNotSupportedException {
+        // super.clone() copies the field values. 
+        // References will still point to the same original objects.
+        return (Employee) super.clone();
+    }
+
+    // Method for Deep Cloning
+    public Employee deepClone() throws CloneNotSupportedException {
+        // Step 1: Perform default shallow clone first
+        Employee clonedEmp = (Employee) super.clone();
+        
+        // Step 2: Manually clone the nested reference objects
+        clonedEmp.address = (Address) this.address.clone();
+        
+        return clonedEmp;
+    }
+}
+
+public class CloningDemo {
+    public static void main(String[] args) {
+        try {
+            // Creating an original object
+            Address originalAddress = new Address("Mumbai");
+            Employee originalEmp = new Employee("Amit", originalAddress);
+
+            // 1. Performing Shallow Clone
+            Employee shallowClonedEmp = originalEmp.shallowClone();
+
+            // 2. Performing Deep Clone
+            Employee deepClonedEmp = originalEmp.deepClone();
+
+            // Modifying the address city using the shallow cloned object
+            shallowClonedEmp.address.city = "Delhi";
+
+            System.out.println("--- After modifying Shallow Clone's City to 'Delhi' ---");
+            // Shallow clone shares the reference, so original object's city changes too
+            System.out.println("Original Emp City: " + originalEmp.address.city); // Output: Delhi
+            System.out.println("Shallow Cloned Emp City: " + shallowClonedEmp.address.city); // Output: Delhi
+            
+            // Deep clone has its own copy, so it remains unaffected
+            System.out.println("Deep Cloned Emp City: " + deepClonedEmp.address.city); // Output: Mumbai
+
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+    }
+}
