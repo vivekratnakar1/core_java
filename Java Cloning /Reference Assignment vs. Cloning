@@ -1,0 +1,53 @@
+// A simple class that permits cloning
+class Account implements Cloneable {
+    int balance;
+
+    Account(int balance) {
+        this.balance = balance;
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
+}
+
+public class DiffDemo {
+    public static void main(String[] args) throws CloneNotSupportedException {
+        
+        // ==========================================
+        // CASE 1: WITHOUT CLONE (Reference Assignment)
+        // ==========================================
+        Account originalAcc1 = new Account(1000);
+        Account assignedAcc = originalAcc1; // No new object is created! Both point to same memory.
+
+        System.out.println("--- CASE 1: WITHOUT CLONE ---");
+        System.out.println("Initial Original 1 Balance: " + originalAcc1.balance); // 1000
+
+        // Modifying the assigned variable
+        assignedAcc.balance = 5000;
+
+        // Bother variables reflect the change because they share the same object
+        System.out.println("Original 1 Balance After Change: " + originalAcc1.balance); // 5000 (Changed!)
+        System.out.println("Assigned Balance After Change: " + assignedAcc.balance);  // 5000
+        System.out.println("Are they the same object? " + (originalAcc1 == assignedAcc)); // true
+
+
+        // ==========================================
+        // CASE 2: WITH CLONE 
+        // ==========================================
+        Account originalAcc2 = new Account(1000);
+        Account clonedAcc = (Account) originalAcc2.clone(); // A completely new object is created in memory!
+
+        System.out.println("\n--- CASE 2: WITH CLONE ---");
+        System.out.println("Initial Original 2 Balance: " + originalAcc2.balance); // 1000
+
+        // Modifying the cloned variable
+        clonedAcc.balance = 5000;
+
+        // The original object remains protected and safe from accidental modification
+        System.out.println("Original 2 Balance After Change: " + originalAcc2.balance); // 1000 (Unchanged!)
+        System.out.println("Cloned Balance After Change: " + clonedAcc.balance);    // 5000
+        System.out.println("Are they the same object? " + (originalAcc2 == clonedAcc)); // false
+    }
+}
