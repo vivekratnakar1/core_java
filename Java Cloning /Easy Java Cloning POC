@@ -1,0 +1,46 @@
+// Step 1: Implement the Cloneable interface to grant cloning permission
+class Car implements Cloneable {
+    String model;
+    int speed;
+
+    Car(String model, int speed) {
+        this.model = model;
+        this.speed = speed;
+    }
+
+    // Step 2: Override the clone method and change visibility to public
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        // super.clone() creates and returns a field-by-field copy of this object
+        return super.clone();
+    }
+}
+
+public class SimpleCloneDemo {
+    public static void main(String[] args) {
+        try {
+            // Step 3: Create an original object
+            Car originalCar = new Car("Tesla Model 3", 200);
+
+            // Step 4: Clone the original object into a new object variable
+            Car clonedCar = (Car) originalCar.clone();
+
+            // Displaying values of both objects
+            System.out.println("--- Initial State ---");
+            System.out.println("Original Car Model: " + originalCar.model + ", Speed: " + originalCar.speed);
+            System.out.println("Cloned Car Model: " + clonedCar.model + ", Speed: " + clonedCar.speed);
+
+            // Step 5: Modify the cloned object's value
+            clonedCar.speed = 250;
+
+            // Verify if the original car's speed remains unchanged
+            System.out.println("\n--- After Modifying Cloned Car Speed to 250 ---");
+            System.out.println("Original Car Speed: " + originalCar.speed); // Still 200
+            System.out.println("Cloned Car Speed: " + clonedCar.speed);     // Changed to 250
+
+        } catch (CloneNotSupportedException e) {
+            // This block executes if the class does not implement Cloneable
+            System.out.println("Cloning not allowed for this class.");
+        }
+    }
+}
